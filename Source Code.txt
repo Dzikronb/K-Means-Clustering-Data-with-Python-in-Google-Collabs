@@ -1,0 +1,122 @@
+// No.1
+
+import pandas as pd
+from pylab import rcParams
+#sklearn 
+import sklearn
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import scale # for scaling the data
+import sklearn.metrics as sm # for evaluating the model
+from sklearn.metrics import confusion_matrix,classification_report
+
+
+
+// No.2
+
+features, true_labels = make_blobs(
+  n_samples=200,
+  centers=3,
+  cluster_std=2.75,
+  random_state=42
+)
+
+
+
+// No.3
+
+features[:200]
+
+
+
+// No.4
+
+true_labels[:200]
+
+
+
+// No.5
+
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(features)
+
+
+
+// No.6
+
+scaled_features[:10]
+
+
+
+// No.7
+
+kmeans = KMeans(
+    init="random",
+    n_clusters=3,
+    n_init=10,
+    max_iter=300,
+    random_state=42
+)
+
+
+
+// No.8
+
+kmeans.fit(scaled_features)
+
+iris_df = pd.DataFrame(features)
+iris_df.columns = ["petal_length","petal_width"]
+
+
+
+// No.9
+
+kmeans.cluster_centers_
+
+
+
+// No.10
+
+kmeans.n_iter_
+
+
+
+// No.11
+
+kmeans.labels_[:200]
+
+
+
+// No.12
+
+plt.scatter(scaled_features[:, 0], scaled_features[:, 1], c=kmeans.labels_)
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], marker='*', s=200, c='#ff7f00')
+plt.show()
+
+
+
+// No.13
+
+color = np.array(["Red","Green","Blue"])
+plt.subplot(1,2,2)
+plt.scatter(scaled_features[:,0], scaled_features[:,1], s=50, alpha=1, cmap='viridis', c=color[kmeans.labels_])
+
+
+
+// No.14
+
+colors = np.array(["Red","Green","Blue"])
+plt.subplot(1,2,1)
+plt.scatter(x=iris_df["petal_length"] ,y= iris_df["petal_width"],c = colors[true_labels],s=50)
+plt.title("Before K Means Classificaion")
+
+plt.subplot(1,2,2)
+plt.scatter(x=iris_df["petal_length"] ,y= iris_df["petal_width"],c = colors[kmeans.labels_],s=50)
+plt.title("K means Classifcation")
+
+
+
